@@ -24,6 +24,7 @@ setup(
     author_email="supersebi3@gmail.com",
     url="https://github.com/supersebi3/pilutils",
     install_requires=parse_requirements_file("requirements.txt"),
+    packages=find_namespace_packages(include=[name + "*"]),
     python_requires=">=3.8.0,<3.10",
     classifiers=[
         "Intended Audience :: Developers",
