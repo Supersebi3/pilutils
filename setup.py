@@ -18,14 +18,13 @@ def parse_requirements_file(path):
 setup(
     name="pilutils",
     version=pilutils_version,
-    description="PLACEHOLDER DESCRIPTION",
+    description="A simple module with some helper functions for Pillow.",
     long_description=long_description(),
     long_description_content_type="text/markdown",
-    author="SuperSebi3",
-    author_email="PLACEHOLDER EMAIL",
+    author="Supersebi3",
+    author_email="gdsupersebi3@gmail.com",
     url="https://github.com/Supersebi3/pilutils",
     packages=find_namespace_packages(include=[name + "*"]),
-    license="PLACEHOLDER LICENSE NAME",
     install_requires=parse_requirements_file("requirements.txt"),
     python_requires=">=3.8.0,<3.10",
     classifiers=[
