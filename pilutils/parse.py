@@ -1,23 +1,32 @@
 """Functions for parsing various strings to RGB tuples."""
-
 import json
 import re
 from pathlib import Path
+import importlib.resources as resources
 
-from .basic import hex_to_rgb
+from pilutils.basic import hex_to_rgb
 
-__colornames = Path(__file__, "..", "colornames").resolve()
-with (__colornames / "css.json").open() as f:
-    _css_names = json.load(f)
-with (__colornames / "crayola.json").open() as f:
-    _crayola_names = json.load(f)
-with (__colornames / "xkcd.json").open() as f:
-    _xkcd_names = json.load(f)
-with (__colornames / "meodai-best.json").open() as f:
-    _meodai_best_names = json.load(f)
-with (__colornames / "meodai.json").open() as f:
-    _meodai_names = json.load(f)
-del f
+__all__ = [
+    "parse_hex6",
+    "parse_hex3",
+    "parse_rgbfunc_int",
+    "parse_rgbfunc_float",
+    "parse_rgbfunc_percent",
+    "parse_name_css",
+    "parse_name_crayola",
+    "parse_name_xkcd",
+    "parse_name_meodai_best",
+    "parse_name_meodai",
+    "parse",
+]
+
+_css_names = json.loads(resources.read_text("pilutils.colornames", "css.json"))
+_crayola_names = json.loads(resources.read_text("pilutils.colornames", "crayola.json"))
+_xkcd_names = json.loads(resources.read_text("pilutils.colornames", "xkcd.json"))
+_meodai_best_names = json.loads(
+    resources.read_text("pilutils.colornames", "meodai-best.json")
+)
+_meodai_names = json.loads(resources.read_text("pilutils.colornames", "meodai.json"))
 
 
 def parse_hex6(hex6):

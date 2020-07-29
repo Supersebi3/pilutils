@@ -3,7 +3,7 @@ from io import BytesIO
 import requests
 from PIL import Image, UnidentifiedImageError
 
-__all__ = ("image_from_url",)
+__all__ = ["image_from_url"]
 
 
 def image_from_url(url):

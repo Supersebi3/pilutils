@@ -3,6 +3,24 @@ import shutil
 import itertools
 import colorsys
 
+__all__ = [
+    "STANDARD_MODES",
+    "SPECIAL_MODES",
+    "ALL_MODES",
+    "hex_to_rgb",
+    "hex_to_rgba",
+    "rgb_to_hex",
+    "rgba_to_hex",
+    "random_color",
+    "iter_pixels",
+    "color_distance",
+    "eval_pixel",
+    "mix",
+    "show_cli",
+    "rgb_to_hsv",
+    "colorize",
+    "align_bbox",
+]
 
 STANDARD_MODES = ("1", "L", "P", "RGB", "YCbCr", "LAB", "HSV", "RGBA", "CMYK", "I", "F")
 SPECIAL_MODES = (
