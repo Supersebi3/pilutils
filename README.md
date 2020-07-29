@@ -1,5 +1,3 @@
 # pilutils
 
-WIP helper module for PIL/Pillow.
-
-idk how pip works so i cant tell you how to install properly
+WIP helper module for PIL/Pillow. Install with `pip install git+https://github.com/Supersebi3/pilutils` (requires git)
