@@ -178,16 +178,18 @@ def colorize(img, color):
     return new
 
 
-def align_bbox(frame, size, align=5, topleft_only=False):
+def align_bbox(frame, size, align=5, topleft_only=False, suppress_wrong_size=False):
     """Align a smaller bounding box of size `size` (a 2-tuple of width and height) into a larger bounding box given by `frame`, a 4-tuple holding (x0, y0, x1, y1) coordinates. x1 and y1 are just outside the box, so a full image has the bounding box (0, 0, width, height). The function returns a second (x0, y0, x1, x2) tuple corresponding to the bounding box that will be aligned. `align` can have any integer value from 1 to 9 corresponding to alignments based on the common number pad layout:
     7 8 9
     4 5 6
-    1 2 3"""
+    1 2 3
+
+    If `suppress_wrong_size` is `True`, the function will not raise an error if the box does not fit inside the frame. It will instead return a box placement outside of the frame. Note that this may mean negative coordinates."""
     fx0, fy0, fx1, fy1 = frame
     fw = fx1 - fx0
     fh = fy1 - fy0
     bw, bh = size
-    if fw < bw or fh < bh:
+    if (fw < bw or fh < bh) and not suppress_wrong_size:
         raise ValueError("Bounding box does not fit into frame.")
     if not 0 < align < 10 or not isinstance(align, int):
         raise ValueError(f"Invalid alignment value {align!r}.")
