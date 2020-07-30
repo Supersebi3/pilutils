@@ -2,6 +2,7 @@ import random
 import shutil
 import itertools
 import colorsys
+from PIL import Image, ImageDraw
 
 __all__ = [
     "STANDARD_MODES",
@@ -20,6 +21,8 @@ __all__ = [
     "rgb_to_hsv",
     "colorize",
     "align_bbox",
+    "round_corner",
+    "round_rectangle",
 ]
 
 STANDARD_MODES = ("1", "L", "P", "RGB", "YCbCr", "LAB", "HSV", "RGBA", "CMYK", "I", "F")
@@ -222,3 +225,27 @@ def align_bbox(frame, size, align=5, topleft_only=False, suppress_wrong_size=Fal
     if topleft_only:
         return (box[0], box[1])
     return box
+
+
+def round_corner(radius, fill, bg=(0, 0, 0, 0)):
+    """Draw a round corner"""
+    corner = Image.new("RGBA", (radius, radius), bg)
+    draw = ImageDraw.Draw(corner)
+    draw.pieslice((0, 0, radius * 2, radius * 2), 180, 270, fill=fill)
+    return corner
+
+
+def round_rectangle(size, radius, fill, bg=(0, 0, 0, 0)):
+    """Draw a rounded rectangle"""
+    width, height = size
+    m = min(width, height)
+    radius = min(radius, m // 2)
+    rectangle = Image.new("RGBA", size, fill)
+    corner = round_corner(radius, fill, bg)
+    rectangle.paste(corner, (0, 0))
+    rectangle.paste(
+        corner.rotate(90), (0, height - radius)
+    )  # Rotate the corner and paste it
+    rectangle.paste(corner.rotate(180), (width - radius, height - radius))
+    rectangle.paste(corner.rotate(270), (width - radius, 0))
+    return rectangle
