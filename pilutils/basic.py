@@ -235,11 +235,12 @@ def round_corner(radius, fill, bg=(0, 0, 0, 0)):
     return corner
 
 
-def round_rectangle(size, radius, fill, bg=(0, 0, 0, 0)):
+def round_rectangle(size, radius, fill, bg=(0, 0, 0, 0), snap=True):
     """Draw a rounded rectangle"""
     width, height = size
-    m = min(width, height)
-    radius = min(radius, m // 2)
+    if snap:
+        m = min(width, height)
+        radius = min(radius, m // 2)
     rectangle = Image.new("RGBA", size, fill)
     corner = round_corner(radius, fill, bg)
     rectangle.paste(corner, (0, 0))

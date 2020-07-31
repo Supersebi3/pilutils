@@ -22,9 +22,9 @@ def rectangle(size, invert=False):
     return mask
 
 
-def round_rectangle(size, radius, invert=False):
+def round_rectangle(size, radius, snap=True, invert=False):
     """Returns a rounded rectangle alpha mask."""
     fg, bg = (255, 255, 255, 255), (0, 0, 0, 255)
     fg, bg = (bg, fg) if invert else (fg, bg)
-    mask = draw_round_rectangle(size, radius, fg, bg).convert("L")
+    mask = draw_round_rectangle(size, radius, fg, bg, snap).convert("L")
     return mask
