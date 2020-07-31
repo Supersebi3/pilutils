@@ -243,10 +243,8 @@ def round_rectangle(size, radius, fill, bg=(0, 0, 0, 0), snap=True):
         radius = min(radius, m // 2)
     rectangle = Image.new("RGBA", size, fill)
     corner = round_corner(radius, fill, bg)
-    rectangle.paste(corner, (0, 0))
-    rectangle.paste(
-        corner.rotate(90), (0, height - radius)
-    )  # Rotate the corner and paste it
-    rectangle.paste(corner.rotate(180), (width - radius, height - radius))
     rectangle.paste(corner.rotate(270), (width - radius, 0))
+    rectangle.paste(corner.rotate(180), (width - radius, height - radius))
+    rectangle.paste(corner.rotate(90), (0, height - radius))
+    rectangle.paste(corner, (0, 0))
     return rectangle
