@@ -47,14 +47,29 @@ ALL_MODES = STANDARD_MODES + SPECIAL_MODES
 def hex_to_rgb(rgb):
     """Convert a 6-digit hexadecimal RGB number to an RGB tuple.
 
-    Note: This function converts an int into a tuple of ints. To parse strings, check `pilutils.parse`."""
+    Args:
+        rgb (:obj:`int`): 6-digit hex number to convert to a tuple.
+
+    Returns:
+        Tuple[ :obj:`int`]: RGB tuple.
+
+    Note:
+        This function converts an int into a tuple of ints. To parse strings, check :obj:`~.parse.parse`.
+    """
     if not 0 <= rgb <= 0xFFFFFF:
         raise ValueError(f"{rgb!r} is not an RGB number.")
     return (rgb >> 16, (rgb >> 8) % 256, rgb % 256)
 
 
 def hex_to_rgba(rgba):
-    """Convert an 8-digit hexadecimal RGBA number to an RGBA tuple."""
+    """Convert an 8-digit hexadecimal RGBA number to an RGBA tuple.
+
+    Args:
+        rgba (:obj:`int`): 8-digit hex number to convert to a tuple.
+
+    Returns:
+        Tuple[ :obj:`int` ]: RGBA tuple.
+    """
     if not 0 <= rgba <= 0xFFFFFFFF:
         raise ValueError("{rgba!r} is not an RGBA number.")
 
@@ -62,7 +77,14 @@ def hex_to_rgba(rgba):
 
 
 def rgb_to_hex(rgb):
-    """Convert an RGB tuple into a 6-digit hexadecimal RGB number."""
+    """Convert an RGB tuple into a 6-digit hexadecimal RGB number.
+
+    Args:
+        rgb (Tuple[ :obj:`int` ]): Tuple to convert to hex.
+
+    Returns:
+        :obj:`int`: RGB hex.
+    """
     if not all(isinstance(n, int) and 0 <= n < 256 for n in rgb) or len(rgb) != 3:
         raise ValueError("{rgb!r} is not an RGB tuple.")
     r, g, b = rgb
@@ -70,7 +92,14 @@ def rgb_to_hex(rgb):
 
 
 def rgba_to_hex(rgba):
-    """Convert an RGBA tuple into an 8-digit hexadecimal RGBA number."""
+    """Convert an RGBA tuple into an 8-digit hexadecimal RGBA number.
+
+    Args:
+        rgba (Tuple[ :obj:`int` ]): Tuple to convert to hex.
+
+    Returns:
+        :obj:`int`: RGBA hex.
+    """
     if not all(isinstance(n, int) and 0 <= n < 256 for n in rgba) or len(rgba) != 4:
         raise ValueError("{rgba!r} is not an RGBA tuple.")
     r, g, b, a = rgba
@@ -85,7 +114,14 @@ def _raise_unsupported_mode(mode):
 
 
 def random_color(mode="RGB"):
-    """Generate a random color in the specified `mode` (default: RGB)."""
+    """Generate a random color in the specified `mode`.
+
+    Args:
+        mode (:obj:`str`): Mode that the generated colour should be in. Defaults to `"RGB"`
+
+    Returns:
+        Union[ :obj:`int`, Tuple[ :obj:`int` ]]: Random colour.
+    """
     if mode == "1":
         return random.randint(0, 1)
     elif mode in ("L", "P"):
@@ -101,21 +137,47 @@ def random_color(mode="RGB"):
 
 
 def iter_pixels(img):
-    """Returns a generator that iterates through every pixel of an image, yielding (x, y, color) tuples on every step."""
+    """Returns a generator that iterates through every pixel of an image, yielding (x, y, color) tuples on every step.
+
+    Args:
+        img (:obj:`PIL.Image.Image`): Image object to iterate through the pixels for.
+
+    Yields:
+        Tuple[ `x`, `y`, `pixel colour` ]: Pixel coordinate and colour of the pixel.
+    """
     for y in range(img.height):
         for x in range(img.width):
             yield (x, y, img.getpixel((x, y)))
 
 
 def color_distance(col1, col2):
-    """Calculates the distance between two colors of equal modes."""
+    """Calculates the distance between two colors of equal modes.
+
+    Args:
+        col1: First colour to compare.
+        col2: Second colour to compare.
+
+    Returns:
+        Union[ :obj:`int`, :obj:`float` ]: Distance between the colours.
+    """
     if isinstance(col1, (int, float)):
         return float(abs(col1 - col2))
     return sum((b1 - b2) ** 2 for b1, b2 in zip(col1, col2)) ** 0.5
 
 
 def eval_pixel(func, img):
-    """Evaluate `func` at every pixel of `img` and return a new Image with those modified values. `func` should take 1 argument representing the original color in the mode of `img` and return a new color of the same mode. This is unlike PIL.Image.eval, which is evaluated on every subpixel on every band, not on every full pixel for multiband images."""
+    """Evaluate `func` at every pixel of `img` and return a new Image with those modified values.
+    `func` should take 1 argument representing the original color in the mode of `img` and return a new
+    color of the same mode. This is unlike :obj:`PIL.Image.eval`, which is evaluated on every subpixel on every band,
+    not on every full pixel for multiband images.
+
+    Args:
+        func (Callable[[ `pixel colour` ], `pixel colour` ]): Function to call to modify the pixel colour value.
+        img (:obj:`PIL.Image.Image`): Image to modify the pixels of.
+
+    Returns:
+        :obj:`PIL.Image.Image`: Modified image object.
+    """
     cache = {}
     new = img.copy()
     for x, y, col in iter_pixels(img):
@@ -134,7 +196,16 @@ def mix(col1, col2, p=0.5):
     - p=1 returns col2
     - p=0.5 returns an equal mix of col1 and col2
     - p=0.25 returns a color containing 75% of col1 and 25% of col2
-    etc."""
+    etc.
+
+    Args:
+        col1: First colour to be mixed.
+        col2: Second colour to be mixed.
+        p (:obj:`float`): Number indicating the colour mix proportion.
+
+    Returns:
+        Tuple[ :obj:`int` ]: New colour after mixing.
+    """
     p = min(max(0, p), 1)
     if isinstance(col1, (int, float)):
         return type(col1)(col1 * (1 - p) + col2 * p)
@@ -160,7 +231,15 @@ def show_cli(img):
 
 
 def rgb_to_hsv(rgb):
-    """Convert an RGB tuple to an HSV tuple for the same color. Both tuples should obey PIL rules, e.g. have 3 integers each ranging 0-255."""
+    """Convert an RGB tuple to an HSV tuple for the same color. Both tuples should obey PIL rules,
+    e.g. have 3 integers each ranging 0-255.
+
+    Args:
+        rgb (Tuple[ :obj:`int` ]): RGB tuple to convert to HSV.
+
+    Returns:
+        Tuple[ :obj:`int` ]: HSV tuple.
+    """
     r, g, b = rgb
     fr, fg, fb = r / 255, g / 255, b / 255
     fh, fs, fv = colorsys.rgb_to_hsv(fr, fg, fb)
