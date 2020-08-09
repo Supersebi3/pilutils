@@ -267,7 +267,11 @@ def align_bbox(frame, size, align=5, margin=0, topleft_only=False, suppress_wron
     1 2 3
 
     If `suppress_wrong_size` is `True`, the function will not raise an error if the box does not fit inside the frame. It will instead return a box placement outside of the frame. Note that this may mean negative coordinates."""
-    fx0, fy0, fx1, fy1 = [c-margin for c in frame]
+    fx0, fy0, fx1, fy1 = frame
+    fx0 += margin
+    fy0 += margin
+    fx1 -= margin
+    fy1 -= margin
     fw = fx1 - fx0
     fh = fy1 - fy0
     bw, bh = size
