@@ -19,6 +19,7 @@ __all__ = [
     "mix",
     "show_cli",
     "rgb_to_hsv",
+    "hsv_to_rgb",
     "colorize",
     "align_bbox",
     "round_corner",
@@ -245,6 +246,27 @@ def rgb_to_hsv(rgb):
     fh, fs, fv = colorsys.rgb_to_hsv(fr, fg, fb)
     h, s, v = round(fh * 255), round(fs * 255), round(fv * 255)
     return h, s, v
+
+
+def hsv_to_rgb(hsv):
+    """Convert an HSV tuple to an RGB tuple for
+the same color. Both tuples should obey PIL rule
+s,
+    e.g. have 3 integers each ranging 0-255.
+
+    Args:
+        hsv (Tuple[ :obj:`int` ]): HSV tuple to convert to RGB.
+
+    Returns:
+        Tuple[ :obj:`int` ]: RGB tuple.
+    """
+    r, g, b = rgb
+
+    h, s, v = hsv
+    fh, fs, fv = h / 255, g / 255, b / 255
+    fr, fg, fb = colorsys.hsv_to_rgb(fh, fs, fv)
+    r, g, b = round(fr * 255), round(fg * 255), round(fb * 255)
+    return r, g, b
 
 
 def colorize(img, color):
