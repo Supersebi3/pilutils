@@ -260,8 +260,6 @@ s,
     Returns:
         Tuple[ :obj:`int` ]: RGB tuple.
     """
-    r, g, b = rgb
-
     h, s, v = hsv
     fh, fs, fv = h / 255, g / 255, b / 255
     fr, fg, fb = colorsys.hsv_to_rgb(fh, fs, fv)
