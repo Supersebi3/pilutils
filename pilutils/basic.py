@@ -24,6 +24,7 @@ __all__ = [
     "align_bbox",
     "round_corner",
     "round_rectangle",
+    "luma",
 ]
 
 STANDARD_MODES = ("1", "L", "P", "RGB", "YCbCr", "LAB", "HSV", "RGBA", "CMYK", "I", "F")
@@ -351,3 +352,10 @@ def round_rectangle(size, radius, fill, bg=(0, 0, 0, 0), snap=True):
     rectangle.paste(corner.rotate(90), (0, height - radius))
     rectangle.paste(corner, (0, 0))
     return rectangle
+
+
+def luma(col):
+    """Calculates ITU-R 601-2 luma value for a given RGB color. This is the same formula used by `PIL.Image.Image.convert` when converting RGB to L."""
+    r, g, b = col
+    return r * 299/1000 + g * 587/1000 + b * 114/1000 
+
