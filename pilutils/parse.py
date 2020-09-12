@@ -4,7 +4,7 @@ import re
 from pathlib import Path
 import importlib.resources as resources
 
-from pilutils.basic import hex_to_rgb
+from pilutils.basic import hex_to_rgb, rough_color_distance
 
 __all__ = [
     "parse_hex6",
@@ -18,6 +18,7 @@ __all__ = [
     "parse_name_meodai_best",
     "parse_name_meodai",
     "parse",
+    "nearest_named_color",
 ]
 
 _css_names = json.loads(resources.read_text("pilutils.colornames", "css.json"))
@@ -161,3 +162,22 @@ def parse(
     if res is None:
         raise ValueError(f"Could not find a working parser for {colstr!r}.")
     return res
+
+
+def nearest_named_color(col, css=True, crayola=True, xkcd=True, meodai_best=True, meodai=True):
+    """Return the nearest named color from the selected color sets as a (name, rgb) tuple.
+
+    NOTE: This function is pretty slow"""
+    colorpool = {}
+    if meodai:
+        colorpool.update(_meodai_names)
+    if meodai_best:
+        colorpool.update(_meodai_best_names)
+    if xkcd:
+        colorpool.update(_xkcd_names)
+    if crayola:
+        colorpool.update(_crayola_names)
+    if css:
+        colorpool.update(_css_names)
+    near_name, near_val = min(colorpool.items(), key=lambda d: rough_color_distance(col, parse_hex6(d[1])))
+    return near_name, near_val

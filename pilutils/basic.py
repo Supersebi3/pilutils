@@ -15,6 +15,7 @@ __all__ = [
     "random_color",
     "iter_pixels",
     "color_distance",
+    "rough_color_distance",
     "eval_pixel",
     "mix",
     "show_cli",
@@ -165,6 +166,21 @@ def color_distance(col1, col2):
     if isinstance(col1, (int, float)):
         return float(abs(col1 - col2))
     return sum((b1 - b2) ** 2 for b1, b2 in zip(col1, col2)) ** 0.5
+
+
+def rough_color_distance(col1, col2):
+    """Same as color_distance, but without the square root. Doesn't give exact distance value, but is good enough to compare different distances.
+
+    Args:
+        col1: First colour to compare.
+        col2: Second colour to compare.
+
+    Returns:
+        Union[ :obj:`int`, :obj:`float` ]: Rough istance between the colours.
+    """
+    if isinstance(col1, (int, float)):
+        return float(abs(col1 - col2))
+    return sum((b1 - b2) ** 2 for b1, b2 in zip(col1, col2))
 
 
 def eval_pixel(func, img):
