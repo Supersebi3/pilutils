@@ -180,4 +180,4 @@ def nearest_named_color(col, css=True, crayola=True, xkcd=True, meodai_best=True
     if css:
         colorpool.update(_css_names)
     near_name, near_val = min(colorpool.items(), key=lambda d: rough_color_distance(col, parse_hex6(d[1])))
-    return near_name, near_val
+    return near_name, parse_hex6(near_val)
