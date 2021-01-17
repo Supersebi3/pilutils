@@ -74,7 +74,7 @@ def hex_to_rgba(rgba):
         Tuple[ :obj:`int` ]: RGBA tuple.
     """
     if not 0 <= rgba <= 0xFFFFFFFF:
-        raise ValueError("{rgba!r} is not an RGBA number.")
+        raise ValueError(f"{rgba!r} is not an RGBA number.")
 
     return (rgba >> 24, (rgba >> 16) % 256, (rgba >> 8) % 256, rgba % 256)
 
@@ -89,7 +89,7 @@ def rgb_to_hex(rgb):
         :obj:`int`: RGB hex.
     """
     if not all(isinstance(n, int) and 0 <= n < 256 for n in rgb) or len(rgb) != 3:
-        raise ValueError("{rgb!r} is not an RGB tuple.")
+        raise ValueError(f"{rgb!r} is not an RGB tuple.")
     r, g, b = rgb
     return r << 16 | g << 8 | b
 
@@ -104,7 +104,7 @@ def rgba_to_hex(rgba):
         :obj:`int`: RGBA hex.
     """
     if not all(isinstance(n, int) and 0 <= n < 256 for n in rgba) or len(rgba) != 4:
-        raise ValueError("{rgba!r} is not an RGBA tuple.")
+        raise ValueError(f"{rgba!r} is not an RGBA tuple.")
     r, g, b, a = rgba
     return r << 24 | g << 16 | b << 8 | a
 
